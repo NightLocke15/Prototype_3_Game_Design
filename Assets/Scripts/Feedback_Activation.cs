@@ -7,31 +7,31 @@ using UnityEngine.UI;
 public class Feedback_Activation : MonoBehaviour
 {
     #region Booleans
-    public bool soundOn;
+    //public bool soundOn;
     #endregion
 
     #region Variables
-    public Toggle footstep;
+    //public Toggle footstep;
     #endregion
 
     #region Effects
-    public AudioSource Footsteps;
-    public TextMeshProUGUI footstepActivationTXT;
+    //public AudioSource Footsteps;
+    //public TextMeshProUGUI footstepActivationTXT;
     #endregion
 
     private void Update()
     {
-        if (footstep.isOn)
-        {
-            Footsteps.enabled = true;
-            footstepActivationTXT.text = "Active";
-            soundOn = true;
-        }
-        else
-        {
-            Footsteps.enabled = false;
-            footstepActivationTXT.text = "Not Active";
-            soundOn = false;
-        }
+        //if (footstep.isOn)
+        //{
+        //    Footsteps.enabled = true;
+        //    footstepActivationTXT.text = "Active";
+        //    soundOn = true;
+        //}
+        //else
+        //{
+        //    Footsteps.enabled = false;
+        //    footstepActivationTXT.text = "Not Active";
+        //    soundOn = false;
+        //}
     }
 }

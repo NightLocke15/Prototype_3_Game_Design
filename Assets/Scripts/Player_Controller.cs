@@ -5,6 +5,7 @@ using UnityEngine;
 public class Player_Controller : MonoBehaviour
 {
     Feedback_Activation feedbackActivation;
+    public ScreenShake screenShake;
 
     #region VARIABLES
     [SerializeField]private float playerSpeed;
@@ -23,6 +24,10 @@ public class Player_Controller : MonoBehaviour
     private GameObject gun;
     [SerializeField] AudioSource footsteps;
     [SerializeField] AudioClip footstep;
+    [SerializeField] AudioSource JumpSource;
+    [SerializeField] AudioClip jump;
+    [SerializeField] AudioSource LandSource;
+    [SerializeField] AudioClip land;
     [SerializeField] Animator PlayerAnimator;
     [SerializeField] ParticleSystem dustParticles;
     [SerializeField] ParticleSystem dustParticlesLand;
@@ -66,8 +71,9 @@ public class Player_Controller : MonoBehaviour
 
     private void Sound()
     {
-        if (feedbackActivation.soundOn == true)
-        {
+        //Footstep Sounds
+        //if (feedbackActivation.soundOn == true)
+        //{
             if (isMoving == true && onFloor == true)
             {
                 if (Time.time - timeBetweenFootsteps >= TimeFootstep)
@@ -80,10 +86,15 @@ public class Player_Controller : MonoBehaviour
             {
                 footsteps.Pause();
             }
-        }
-        else
-        {
+        //}
+        //else
+        //{
 
+        //}
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            JumpSource.PlayOneShot(jump);
         }
     }
 
@@ -172,6 +183,8 @@ public class Player_Controller : MonoBehaviour
                 Debug.Log("Landed");
                 timeUp = 0;
                 dustParticlesLand.Play();
+                screenShake.Shake(0.2f);
+                LandSource.PlayOneShot(land);
             }
         }
     }
