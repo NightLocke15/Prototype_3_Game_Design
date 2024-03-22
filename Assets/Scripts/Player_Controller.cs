@@ -14,8 +14,9 @@ public class Player_Controller : MonoBehaviour
     public bool isMoving;
     private float TimeFootstep = 0.2f;
     private float timeBetweenFootsteps;
-    private KeyCode LastKeyPress;
     [SerializeField] private float timeUp;
+    [SerializeField] private float bulletSpeed;
+    public float push;
     #endregion
 
     #region GAMEOBJECTS & ITS STUFF
@@ -28,9 +29,16 @@ public class Player_Controller : MonoBehaviour
     [SerializeField] AudioClip jump;
     [SerializeField] AudioSource LandSource;
     [SerializeField] AudioClip land;
+    [SerializeField] AudioSource ShotSource;
+    [SerializeField] AudioClip shot;
     [SerializeField] Animator PlayerAnimator;
+    [SerializeField] Animator GunAnimator;
     [SerializeField] ParticleSystem dustParticles;
     [SerializeField] ParticleSystem dustParticlesLand;
+    [SerializeField] ParticleSystem gunParticles;
+    [SerializeField] private GameObject bullet;
+    public Transform shootPointTransform;
+    [SerializeField] private GameObject gunParticleHolder;
     #endregion
 
     private void Start()
@@ -49,6 +57,7 @@ public class Player_Controller : MonoBehaviour
         Sound();
         DustParticlePlays();
         Landed();
+        PlayerShooting();
 
         if (onFloor == false)
         {
@@ -72,8 +81,8 @@ public class Player_Controller : MonoBehaviour
     private void Sound()
     {
         //Footstep Sounds
-        //if (feedbackActivation.soundOn == true)
-        //{
+        if (feedbackActivation.playerWalkSound == true)
+        {
             if (isMoving == true && onFloor == true)
             {
                 if (Time.time - timeBetweenFootsteps >= TimeFootstep)
@@ -86,15 +95,34 @@ public class Player_Controller : MonoBehaviour
             {
                 footsteps.Pause();
             }
-        //}
-        //else
-        //{
+        }
+        else
+        {
 
-        //}
+        }
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            JumpSource.PlayOneShot(jump);
+            if (feedbackActivation.playerJumpSound == true)
+            {
+                JumpSource.PlayOneShot(jump);
+            }
+            else
+            {
+
+            }
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            if (feedbackActivation.gunSound == true)
+            {
+                ShotSource.PlayOneShot(shot);
+            }
+            else
+            {
+
+            }
         }
     }
 
@@ -105,6 +133,7 @@ public class Player_Controller : MonoBehaviour
             player.transform.position += Vector3.right * playerSpeed * Time.deltaTime;
             isMoving = true;
             player.transform.localScale = new Vector3(1, 1, 1);
+            shootPointTransform.rotation = Quaternion.Euler(0, 0, 0);
 
             if (onFloor == true)
             {
@@ -120,20 +149,41 @@ public class Player_Controller : MonoBehaviour
             player.transform.position += Vector3.left * playerSpeed * Time.deltaTime;
             isMoving = true;
             player.transform.localScale = new Vector3(-1, 1, 1);
+            shootPointTransform.rotation = Quaternion.Euler(0, 0, 180);
 
-            if (onFloor == true)
+            if (feedbackActivation.playerAnimation == true)
             {
-                PlayerAnimator.SetInteger("Movement", 1);
+                PlayerAnimator.enabled = true;
+
+                if (onFloor == true)
+                {
+                    PlayerAnimator.SetInteger("Movement", 1);
+                }
+                else if (onFloor == false)
+                {
+                    PlayerAnimator.SetInteger("Movement", 0);
+                }
             }
-            else if (onFloor == false)
+            else
             {
-                PlayerAnimator.SetInteger("Movement", 0);
+                PlayerAnimator.enabled = false;
             }
         }
         else
         {
             isMoving = false;
-            PlayerAnimator.SetInteger("Movement", 0);
+
+            if (feedbackActivation.playerAnimation == true)
+            {
+                PlayerAnimator.enabled = true;
+
+                PlayerAnimator.SetInteger("Movement", 0);
+            }
+            else
+            {
+                PlayerAnimator.enabled = false;
+            }
+
         }
 
         
@@ -141,7 +191,17 @@ public class Player_Controller : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && onFloor == true)
         {
             playerRB.AddForce(Vector2.up * playerJumpSpeed, ForceMode2D.Impulse);
-            PlayerAnimator.SetInteger("Movement", 2);
+
+            if (feedbackActivation.playerAnimation == true)
+            {
+                PlayerAnimator.enabled = true;
+
+                PlayerAnimator.SetInteger("Movement", 2);
+            }
+            else
+            {
+                PlayerAnimator.enabled = false;
+            }
         }
     }
 
@@ -150,11 +210,13 @@ public class Player_Controller : MonoBehaviour
         if (Input.GetKey(KeyCode.D))
         {
             gun.transform.localScale = new Vector3(1, 0.1f, 1);
+            gunParticleHolder.transform.rotation = Quaternion.Euler(0, 0, 0);
         }
 
         if (Input.GetKey(KeyCode.A))
         {
             gun.transform.localScale = new Vector3(-1, 0.1f, 1);
+            gunParticleHolder.transform.rotation = Quaternion.Euler(0, 0, 180);
         }
     }
 
@@ -162,15 +224,36 @@ public class Player_Controller : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.D) && onFloor == true)
         {
-            dustParticles.Play();
+            if (feedbackActivation.playerWalkParticles == true)
+            {
+                dustParticles.Play();
+            }
+            else
+            {
+
+            }
         }
         else if (Input.GetKeyDown(KeyCode.A) && onFloor == true)
         {
-            dustParticles.Play();
+            if (feedbackActivation.playerWalkParticles == true)
+            {
+                dustParticles.Play();
+            }
+            else
+            {
+
+            }
         }
         else if (Input.GetKeyDown(KeyCode.Space) && onFloor == true)
         {
-            dustParticles.Play();
+            if (feedbackActivation.playerWalkParticles == true)
+            {
+                dustParticles.Play();
+            }
+            else
+            {
+
+            }
         }
     }
 
@@ -182,9 +265,77 @@ public class Player_Controller : MonoBehaviour
             {
                 Debug.Log("Landed");
                 timeUp = 0;
-                dustParticlesLand.Play();
-                screenShake.Shake(0.2f);
-                LandSource.PlayOneShot(land);
+                if (feedbackActivation.playerLandingParticles == true)
+                {
+                    dustParticlesLand.Play();
+                }
+                else
+                {
+
+                }
+
+                if (feedbackActivation.screenShake == true)
+                {
+                    screenShake.Shake(0.2f);
+                }
+                else
+                {
+
+                }
+                
+                if (feedbackActivation.playerLandingSound == true)
+                {
+                    LandSource.PlayOneShot(land);
+                }
+                else
+                {
+
+                }
+                
+            }
+        }
+    }
+
+    private void PlayerShooting()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            var bulletObject = Instantiate(bullet, shootPointTransform.position, shootPointTransform.rotation);
+            bulletObject.GetComponent<Rigidbody2D>().velocity = shootPointTransform.right * bulletSpeed;
+            
+            if (feedbackActivation.shootingParticles == true)
+            {
+                gunParticles.Play();
+            }
+            else
+            {
+
+            }
+            
+            if (feedbackActivation.gunAnimation == true)
+            {
+                GunAnimator.SetTrigger("Shoot");
+            }
+            else
+            {
+
+            }
+            
+
+            if (feedbackActivation.gunRecoil == true)
+            {
+                if (shootPointTransform.position.x > player.transform.position.x)
+                {
+                    player.GetComponent<Rigidbody2D>().AddForce(new Vector2(-push, 0), ForceMode2D.Impulse);
+                }
+                else if (shootPointTransform.position.x < player.transform.position.x)
+                {
+                    player.GetComponent<Rigidbody2D>().AddForce(new Vector2(push, 0), ForceMode2D.Impulse);
+                }
+            }
+            else
+            {
+
             }
         }
     }
