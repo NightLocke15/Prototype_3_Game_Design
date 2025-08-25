@@ -475,8 +475,7 @@ games. Anything I can use again, and not have to code again is a positive in my 
 **Resources:**
 
 Belty118. (2019). ‘Move player backwards when firing a gun. Unity 2D. Top Down.’ Unity
-Discussions. January. Available at: https://discussions.unity.com/t/move-player-
-backwards-when-firing-a-gun-unity-2d-top-down/218929 [Accessed on: 20 March
+Discussions. January. Available at: https://discussions.unity.com/t/move-player-backwards-when-firing-a-gun-unity-2d-top-down/218929 [Accessed on: 20 March
 2024]
 
 Brackeys. (2018). 2D Animation in Unity (Tutorial). 5 August. Available at:
@@ -500,16 +499,14 @@ March 2024]
 
 Raja-Unity. (2017). ‘How to make player detect when on ground and when lands on
 ground.’ Unity Discussions. September. Available at:
-https://discussions.unity.com/t/how-to-make-player-detect-when-on-ground-and-
-when-lands-on-ground/196439 [Accessed on: 14 March 2024]
+https://discussions.unity.com/t/how-to-make-player-detect-when-on-ground-and-when-lands-on-ground/196439 [Accessed on: 14 March 2024]
 
 Ruiz, B. and Wegner, M. (2015) Anatomy of a Successful Attack. Available at:
 https://aztez.com/blog/2014/01/06/anatomy-of-a-successful-attack/ [Accessed on: 12
 March 2024]
 
 Sharp Coder Blog. (n.d.). ‘Unity Implementing Footstep Sounds.’ Sharp Coder Blog.
-Available at: https://www.sharpcoderblog.com/blog/unity-implementing-footstep-
-sounds [Accessed on: 14 March 2024]
+Available at: https://www.sharpcoderblog.com/blog/unity-implementing-footstep-sounds [Accessed on: 14 March 2024]
 
 Unity3D School. (2021). Simple Shooting | 2D | Bullets | Unity Game Engine. 20
 November. Available at: https://www.youtube.com/watch?v=4KoAlJ8sPy4 [Accessed
